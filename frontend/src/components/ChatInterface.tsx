@@ -81,52 +81,126 @@ const ChatInterface = () => {
   };
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', height: 'calc(100vh - 200px)' }}>
-      <Box sx={{ mb: 2 }}>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100vh',
+        background: 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)',
+      }}
+    >
+      {/* Header */}
+      <Box sx={{ mb: 0 }}>
         <Paper
-          elevation={2}
+          elevation={0}
           sx={{
-            p: 2,
+            p: 3,
             display: 'flex',
             alignItems: 'center',
             gap: 2,
-            background: 'linear-gradient(90deg,#1976d2,#60a5fa)',
+            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
             color: '#fff',
+            borderRadius: 0,
+            boxShadow: '0 8px 32px rgba(102, 126, 234, 0.2)',
           }}
         >
-          <Avatar sx={{ bgcolor: 'rgba(255,255,255,0.2)' }}>SB</Avatar>
+          <Avatar
+            sx={{
+              width: 48,
+              height: 48,
+              bgcolor: 'rgba(255,255,255,0.25)',
+              fontSize: '1.5rem',
+              fontWeight: 700,
+              boxShadow: '0 4px 15px rgba(0,0,0,0.1)',
+            }}
+          >
+            SB
+          </Avatar>
           <Box>
-            <Typography variant="h6" sx={{ fontWeight: 600 }}>
+            <Typography
+              variant="h5"
+              sx={{
+                fontWeight: 700,
+                letterSpacing: '0.5px',
+              }}
+            >
               Study Buddy
             </Typography>
-            <Typography variant="caption" sx={{ opacity: 0.9 }}>
-              Your study assistant
+            <Typography
+              variant="subtitle2"
+              sx={{
+                opacity: 0.9,
+                fontWeight: 400,
+              }}
+            >
+              Your intelligent study companion
             </Typography>
           </Box>
         </Paper>
       </Box>
 
+      {/* Messages Container */}
       <Paper
-        elevation={3}
+        elevation={0}
         sx={{
           flex: 1,
           overflow: 'auto',
-          mb: 2,
-          p: 2,
-          background: 'linear-gradient(180deg,#f7fbff,#eef7ff)',
+          m: 2,
+          p: 3,
+          background: 'linear-gradient(180deg, #ffffff 0%, #f8f9ff 100%)',
+          borderRadius: 3,
+          boxShadow: '0 12px 40px rgba(0, 0, 0, 0.08)',
           '&::-webkit-scrollbar': {
-            width: 10,
+            width: 12,
+          },
+          '&::-webkit-scrollbar-track': {
+            background: 'transparent',
           },
           '&::-webkit-scrollbar-thumb': {
-            background: '#cfe8ff',
-            borderRadius: 8,
+            background: 'linear-gradient(180deg, #667eea, #764ba2)',
+            borderRadius: 12,
+            border: '3px solid transparent',
+            backgroundClip: 'padding-box',
+          },
+          '&::-webkit-scrollbar-thumb:hover': {
+            background: 'linear-gradient(180deg, #5568d3, #6b3a8f)',
+            backgroundClip: 'padding-box',
           },
         }}
       >
         {messages.length === 0 ? (
-          <Box sx={{ textAlign: 'center', mt: 4 }}>
-            <Typography variant="body1" color="text.secondary">
-              Start a conversation with Study Buddy!
+          <Box
+            sx={{
+              textAlign: 'center',
+              mt: 8,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: 2,
+            }}
+          >
+            <Avatar
+              sx={{
+                width: 80,
+                height: 80,
+                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                fontSize: '2.5rem',
+              }}
+            >
+              💬
+            </Avatar>
+            <Typography
+              variant="h6"
+              sx={{
+                color: '#667eea',
+                fontWeight: 600,
+                letterSpacing: '0.3px',
+              }}
+            >
+              Start a conversation
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              Ask Study Buddy anything about your studies!
             </Typography>
           </Box>
         ) : (
@@ -136,37 +210,88 @@ const ChatInterface = () => {
                 key={message.id}
                 sx={{
                   justifyContent: message.sender === 'user' ? 'flex-end' : 'flex-start',
-                  mb: 1,
+                  mb: 2,
+                  animation: 'slideIn 0.3s ease-out',
+                  '@keyframes slideIn': {
+                    from: {
+                      opacity: 0,
+                      transform: 'translateY(10px)',
+                    },
+                    to: {
+                      opacity: 1,
+                      transform: 'translateY(0)',
+                    },
+                  },
                 }}
               >
                 <Box
                   sx={{
                     display: 'flex',
                     alignItems: 'flex-end',
-                    gap: 1,
+                    gap: 1.5,
                     flexDirection: message.sender === 'user' ? 'row-reverse' : 'row',
                   }}
                 >
-                  <Avatar sx={{ width: 32, height: 32, bgcolor: message.sender === 'user' ? '#1565c0' : '#e0f2fe', color: message.sender === 'user' ? '#fff' : '#000' }}>
-                    {message.sender === 'user' ? 'You' : 'Bot'}
+                  <Avatar
+                    sx={{
+                      width: 36,
+                      height: 36,
+                      fontSize: '0.875rem',
+                      fontWeight: 600,
+                      background:
+                        message.sender === 'user'
+                          ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
+                          : 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+                      color: '#fff',
+                      boxShadow: message.sender === 'user' ? '0 4px 12px rgba(102, 126, 234, 0.3)' : '0 4px 12px rgba(245, 87, 108, 0.3)',
+                    }}
+                  >
+                    {message.sender === 'user' ? '👤' : '🤖'}
                   </Avatar>
 
                   <Paper
-                    elevation={1}
+                    elevation={0}
                     sx={{
                       p: 2,
-                      maxWidth: '70%',
-                      borderRadius: 2,
-                      background: message.sender === 'user' ? 'linear-gradient(90deg,#1565c0,#1976d2)' : '#fff',
-                      color: message.sender === 'user' ? '#fff' : '#000',
-                      boxShadow: message.sender === 'user' ? '0 6px 18px rgba(25,118,210,0.12)' : 'none',
+                      maxWidth: '75%',
+                      borderRadius: 2.5,
+                      background:
+                        message.sender === 'user'
+                          ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
+                          : '#fff',
+                      color: message.sender === 'user' ? '#fff' : '#1a1a1a',
+                      boxShadow:
+                        message.sender === 'user'
+                          ? '0 8px 24px rgba(102, 126, 234, 0.15)'
+                          : '0 4px 12px rgba(0, 0, 0, 0.08)',
+                      transition: 'all 0.2s ease',
+                      '&:hover': {
+                        boxShadow:
+                          message.sender === 'user'
+                            ? '0 12px 32px rgba(102, 126, 234, 0.2)'
+                            : '0 6px 16px rgba(0, 0, 0, 0.12)',
+                      },
                     }}
                   >
                     <ListItemText
                       primary={message.text}
-                      secondary={message.timestamp.toLocaleTimeString()}
+                      secondary={message.timestamp.toLocaleTimeString([], {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                      })}
+                      primaryTypographyProps={{
+                        sx: {
+                          fontWeight: 500,
+                          lineHeight: 1.5,
+                          letterSpacing: '0.3px',
+                        },
+                      }}
                       secondaryTypographyProps={{
-                        color: message.sender === 'user' ? 'rgba(255,255,255,0.8)' : 'text.secondary',
+                        color:
+                          message.sender === 'user'
+                            ? 'rgba(255,255,255,0.7)'
+                            : 'text.secondary',
+                        sx: { fontSize: '0.75rem', mt: 0.5 },
                       }}
                     />
                   </Paper>
@@ -174,29 +299,98 @@ const ChatInterface = () => {
               </ListItem>
             ))}
             {loading && (
-              <ListItem sx={{ justifyContent: 'flex-start' }}>
-                <CircularProgress size={24} />
+              <ListItem sx={{ justifyContent: 'flex-start', mb: 2 }}>
+                <Box sx={{ display: 'flex', alignItems: 'flex-end', gap: 1.5 }}>
+                  <Avatar
+                    sx={{
+                      width: 36,
+                      height: 36,
+                      background: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+                    }}
+                  >
+                    🤖
+                  </Avatar>
+                  <Box
+                    sx={{
+                      p: 2,
+                      borderRadius: 2.5,
+                      background: '#fff',
+                      boxShadow: '0 4px 12px rgba(0, 0, 0, 0.08)',
+                    }}
+                  >
+                    <CircularProgress size={24} sx={{ color: '#667eea' }} />
+                  </Box>
+                </Box>
               </ListItem>
             )}
           </List>
         )}
       </Paper>
-      <Box sx={{ display: 'flex', gap: 1 }}>
+      {/* Input Area */}
+      <Box
+        sx={{
+          p: 2,
+          display: 'flex',
+          gap: 1.5,
+          background: '#fff',
+          borderTop: '1px solid rgba(0, 0, 0, 0.06)',
+        }}
+      >
         <TextField
           fullWidth
           variant="outlined"
-          placeholder="Type your message..."
+          placeholder="Type your question..."
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyPress={handleKeyPress}
           disabled={loading}
+          multiline
+          maxRows={3}
+          sx={{
+            '& .MuiOutlinedInput-root': {
+              borderRadius: 3,
+              transition: 'all 0.3s ease',
+              background: '#f8f9ff',
+              '&:hover': {
+                background: '#f0f2ff',
+              },
+              '&.Mui-focused': {
+                background: '#fff',
+                boxShadow: '0 0 0 2px rgba(102, 126, 234, 0.1)',
+              },
+            },
+            '& .MuiOutlinedInput-input::placeholder': {
+              color: '#b0b9d4',
+              opacity: 1,
+            },
+          }}
         />
         <Button
           variant="contained"
           endIcon={<SendIcon />}
           onClick={handleSend}
           disabled={loading || !input.trim()}
-          sx={{ minWidth: 120 }}
+          sx={{
+            minWidth: 120,
+            borderRadius: 3,
+            textTransform: 'none',
+            fontWeight: 600,
+            fontSize: '1rem',
+            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+            boxShadow: '0 8px 20px rgba(102, 126, 234, 0.3)',
+            transition: 'all 0.3s ease',
+            '&:hover:not(:disabled)': {
+              boxShadow: '0 12px 28px rgba(102, 126, 234, 0.4)',
+              transform: 'translateY(-2px)',
+            },
+            '&:active:not(:disabled)': {
+              transform: 'translateY(0)',
+            },
+            '&:disabled': {
+              background: '#d0d5e8',
+              color: '#999',
+            },
+          }}
         >
           Send
         </Button>
