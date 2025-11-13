@@ -51,12 +51,12 @@ const ChatInterface = () => {
       });
       const data = await response.json();
 
-      const botMessage: Message = {
-    id: (Date.now() + 1).toString(),
-    text: data.reply || 'No response from server.',
-    sender: 'bot',
-    timestamp: new Date(),
-    };
+     const botMessage: Message = {
+  id: (Date.now() + 1).toString(),
+  text: data.response || 'No response from server.',
+  sender: 'bot',
+  timestamp: new Date(),
+};
 
       setMessages((prev) => [...prev, botMessage]);
     } catch (error) {
