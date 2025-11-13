@@ -9,6 +9,7 @@ import {
   ListItem,
   ListItemText,
   CircularProgress,
+  Avatar,
 } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import { Message } from '../types';
@@ -43,13 +44,19 @@ const ChatInterface = () => {
 
       // Placeholder: Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 1000));
+      const response = await fetch('http://localhost:3001/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: input }),
+      });
+      const data = await response.json();
 
       const botMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        text: 'This is a placeholder response. Implement API call here.',
-        sender: 'bot',
-        timestamp: new Date(),
-      };
+    id: (Date.now() + 1).toString(),
+    text: data.reply || 'No response from server.',
+    sender: 'bot',
+    timestamp: new Date(),
+    };
 
       setMessages((prev) => [...prev, botMessage]);
     } catch (error) {
@@ -75,6 +82,30 @@ const ChatInterface = () => {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', height: 'calc(100vh - 200px)' }}>
+      <Box sx={{ mb: 2 }}>
+        <Paper
+          elevation={2}
+          sx={{
+            p: 2,
+            display: 'flex',
+            alignItems: 'center',
+            gap: 2,
+            background: 'linear-gradient(90deg,#1976d2,#60a5fa)',
+            color: '#fff',
+          }}
+        >
+          <Avatar sx={{ bgcolor: 'rgba(255,255,255,0.2)' }}>SB</Avatar>
+          <Box>
+            <Typography variant="h6" sx={{ fontWeight: 600 }}>
+              Study Buddy
+            </Typography>
+            <Typography variant="caption" sx={{ opacity: 0.9 }}>
+              Your study assistant
+            </Typography>
+          </Box>
+        </Paper>
+      </Box>
+
       <Paper
         elevation={3}
         sx={{
@@ -82,7 +113,14 @@ const ChatInterface = () => {
           overflow: 'auto',
           mb: 2,
           p: 2,
-          backgroundColor: '#f5f5f5',
+          background: 'linear-gradient(180deg,#f7fbff,#eef7ff)',
+          '&::-webkit-scrollbar': {
+            width: 10,
+          },
+          '&::-webkit-scrollbar-thumb': {
+            background: '#cfe8ff',
+            borderRadius: 8,
+          },
         }}
       >
         {messages.length === 0 ? (
@@ -101,23 +139,38 @@ const ChatInterface = () => {
                   mb: 1,
                 }}
               >
-                <Paper
-                  elevation={1}
+                <Box
                   sx={{
-                    p: 2,
-                    maxWidth: '70%',
-                    backgroundColor: message.sender === 'user' ? '#1976d2' : '#fff',
-                    color: message.sender === 'user' ? '#fff' : '#000',
+                    display: 'flex',
+                    alignItems: 'flex-end',
+                    gap: 1,
+                    flexDirection: message.sender === 'user' ? 'row-reverse' : 'row',
                   }}
                 >
-                  <ListItemText
-                    primary={message.text}
-                    secondary={message.timestamp.toLocaleTimeString()}
-                    secondaryTypographyProps={{
-                      color: message.sender === 'user' ? 'rgba(255,255,255,0.7)' : 'text.secondary',
+                  <Avatar sx={{ width: 32, height: 32, bgcolor: message.sender === 'user' ? '#1565c0' : '#e0f2fe', color: message.sender === 'user' ? '#fff' : '#000' }}>
+                    {message.sender === 'user' ? 'You' : 'Bot'}
+                  </Avatar>
+
+                  <Paper
+                    elevation={1}
+                    sx={{
+                      p: 2,
+                      maxWidth: '70%',
+                      borderRadius: 2,
+                      background: message.sender === 'user' ? 'linear-gradient(90deg,#1565c0,#1976d2)' : '#fff',
+                      color: message.sender === 'user' ? '#fff' : '#000',
+                      boxShadow: message.sender === 'user' ? '0 6px 18px rgba(25,118,210,0.12)' : 'none',
                     }}
-                  />
-                </Paper>
+                  >
+                    <ListItemText
+                      primary={message.text}
+                      secondary={message.timestamp.toLocaleTimeString()}
+                      secondaryTypographyProps={{
+                        color: message.sender === 'user' ? 'rgba(255,255,255,0.8)' : 'text.secondary',
+                      }}
+                    />
+                  </Paper>
+                </Box>
               </ListItem>
             ))}
             {loading && (
